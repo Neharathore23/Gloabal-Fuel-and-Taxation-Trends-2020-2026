@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% from "_macros.html" import chart_card, page_head with context %}
+{% block title %}Tax &amp; subsidy analysis{% endblock %}
+{% block content %}
+{{ page_head("Taxation and subsidy analysis", "Compare tax rates and burdens, and see how subsidies relate to retail prices.", ["Policy consultants", "Researchers"]) }}
+<div class="row g-3">
+  {{ chart_card("tax_rate_box", col="col-12 col-xl-6", height=420) }}
+  {{ chart_card("region_tax_subsidy", col="col-12 col-xl-6", height=420) }}
+  {{ chart_card("price_vs_tax", col="col-12 col-xl-6", height=420) }}
+  {{ chart_card("subsidy_vs_price", col="col-12 col-xl-6", height=420) }}
+</div>
+<aside class="card mt-3"><div class="card-body small">
+  <strong>How to read these charts.</strong> Tax rate = tax ÷ pre-tax price; tax burden = tax ÷ retail price; subsidy ratio = subsidy ÷ retail price.
+  The scatter plots show associations between country averages; they cannot show that taxes or subsidies <em>cause</em> higher or lower prices.
+</div></aside>
+{% endblock %}

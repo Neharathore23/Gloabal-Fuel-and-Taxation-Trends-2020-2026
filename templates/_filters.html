@@ -1,0 +1,46 @@
+<section class="filter-bar" aria-label="Data filters">
+  <div class="container-xl">
+    <div class="d-flex flex-wrap align-items-center gap-2 py-2">
+      <button class="btn btn-sm btn-outline-light d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#filtersPanel"
+              aria-expanded="false" aria-controls="filtersPanel">Filters <span class="badge text-bg-warning" id="filter-count">0</span></button>
+      <div id="filter-summary" class="filter-summary small flex-grow-1" aria-live="polite">All countries, fuels and months</div>
+      <button class="btn btn-sm btn-warning" type="button" id="filter-reset">Reset filters</button>
+    </div>
+    <form id="filters" class="collapse d-lg-block pb-3" autocomplete="off" onsubmit="return false">
+      <div class="row g-3">
+        <div class="col-6 col-md-3 col-lg-2">
+          <label class="form-label small" for="f-from">From (YYYY-MM)</label>
+          <input class="form-control form-control-sm" type="month" id="f-from" name="date_from" min="{{ opts.date_min }}" max="{{ opts.date_max }}" placeholder="{{ opts.date_min }}" pattern="\d{4}-\d{2}">
+          <label class="form-label small mt-2" for="f-to">To (YYYY-MM)</label>
+          <input class="form-control form-control-sm" type="month" id="f-to" name="date_to" min="{{ opts.date_min }}" max="{{ opts.date_max }}" placeholder="{{ opts.date_max }}" pattern="\d{4}-\d{2}">
+        </div>
+        <fieldset class="col-6 col-md-3 col-lg-2">
+          <legend class="form-label small">Fuel type</legend>
+          {% for fu in opts.fuels %}
+          <div class="form-check"><input class="form-check-input" type="checkbox" name="fuel" value="{{ fu }}" id="fu-{{ loop.index }}">
+            <label class="form-check-label small" for="fu-{{ loop.index }}">{{ fu }}</label></div>
+          {% endfor %}
+          <legend class="form-label small mt-2">Income group</legend>
+          {% for g in opts.income_groups %}
+          <div class="form-check"><input class="form-check-input" type="checkbox" name="income" value="{{ g }}" id="in-{{ loop.index }}">
+            <label class="form-check-label small" for="in-{{ loop.index }}">{{ g }}</label></div>
+          {% endfor %}
+        </fieldset>
+        <fieldset class="col-12 col-md-6 col-lg-4">
+          <legend class="form-label small">Region</legend>
+          {% for r in opts.regions %}
+          <div class="form-check"><input class="form-check-input" type="checkbox" name="region" value="{{ r }}" id="rg-{{ loop.index }}">
+            <label class="form-check-label small" for="rg-{{ loop.index }}">{{ r }}</label></div>
+          {% endfor %}
+        </fieldset>
+        <div class="col-12 col-lg-4">
+          <label class="form-label small" for="f-country">Countries <span class="text-muted">(Ctrl/Cmd-click for several)</span></label>
+          <select class="form-select form-select-sm" id="f-country" name="country" multiple size="7">
+            {% for c in opts.countries %}<option value="{{ c.country_code }}">{{ c.country }}</option>{% endfor %}
+          </select>
+        </div>
+      </div>
+      <div id="filter-msg" class="text-warning small mt-2" role="alert"></div>
+    </form>
+  </div>
+</section>

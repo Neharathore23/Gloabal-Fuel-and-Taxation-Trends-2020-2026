@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% from "_macros.html" import chart_card, data_table, page_head with context %}
+{% block title %}Regional &amp; country comparison{% endblock %}
+{% block content %}
+{{ page_head("Regional and country comparison", "How prices differ between the seven regions and across individual countries; median and maximum statistics included.", ["Supply-chain managers", "Policy consultants"]) }}
+<div class="row g-3">
+  {{ chart_card("region_bar", col="col-12 col-xl-6", height=400) }}
+  {{ chart_card("trend_region", col="col-12 col-xl-6", height=400) }}
+  {{ chart_card("country_ranking", col="col-12 col-xl-6", height=560, opts=[("n", "Countries per end", [(8,"Top/bottom 8"),(12,"Top/bottom 12"),(20,"Top/bottom 20")], 12)]) }}
+  <div class="col-12 col-xl-6">{{ data_table("price_stats", "Price statistics (USD/L): mean, median, max, std dev", by="region") }}</div>
+  <div class="col-12">{{ data_table("country_table", "Country comparison (click a column to sort)") }}</div>
+</div>
+{% endblock %}

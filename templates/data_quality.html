@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Data quality{% endblock %}
+{% block content %}
+<h1 class="h3">Data quality summary</h1>
+{% if not rep %}
+<div class="alert alert-warning">No quality report found. Run <code>python scripts/run_pipeline.py</code>.</div>
+{% else %}
+<p class="text-muted">Generated {{ rep.generated_at }} · origin: <strong>{{ "SYNTHETIC (simulated)" if rep.is_synthetic else "external" }}</strong> · grain: {{ rep.grain }} · {{ rep.price_basis }}</p>
+{% set c = rep.counts %}
+<div class="row g-3 mb-3">
+  <div class="col-6 col-lg-3"><div class="card kpi-card"><div class="card-body"><div class="kpi-label">Source records</div><div class="kpi-value">{{ "{:,}".format(c.source_records) }}</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card kpi-card"><div class="card-body"><div class="kpi-label">Removed</div><div class="kpi-value">{{ "{:,}".format(c.total_removed) }}</div><div class="kpi-hint">all logged</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card kpi-card"><div class="card-body"><div class="kpi-label">Cleaned records</div><div class="kpi-value">{{ "{:,}".format(c.cleaned_records) }}</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card kpi-card"><div class="card-body"><div class="kpi-label">Inserted in database</div><div class="kpi-value">{{ "{:,}".format(summary.row_counts.get("fact_fuel_price", 0)) }}</div></div></div></div>
+</div>
+{% if not c.target_met %}
+<div class="alert alert-info">The brief’s target of {{ "{:,}".format(target) }} records was <strong>not met</strong>: the dataset has {{ "{:,}".format(c.cleaned_records) }} cleaned rows at the stated grain. The pipeline reports the actual count only.</div>
+{% endif %}
+
+<div class="row g-3">
+  <div class="col-lg-4"><div class="card h-100"><div class="card-header">Removed rows by reason</div>
+    <table class="table table-sm mb-0"><tbody>{% for k, v in rep.rejected_by_reason.items() %}<tr><td>{{ k.replace("_"," ") }}</td><td class="text-end">{{ v }}</td></tr>{% endfor %}</tbody></table></div></div>
+  <div class="col-lg-4"><div class="card h-100"><div class="card-header">Imputed / derived values</div>
+    <table class="table table-sm mb-0"><tbody>{% for k, v in rep.imputed.items() %}<tr><td>{{ k.replace("_"," ") }}</td><td class="text-end">{{ v }}</td></tr>{% endfor %}</tbody></table>
+    <div class="card-footer small text-muted">Flags kept on rows: {% for k, v in rep.flags_kept.items() %}{{ k }} ({{ v }}){{ ", " if not loop.last }}{% endfor %}</div></div></div>
+  <div class="col-lg-4"><div class="card h-100"><div class="card-header">Coverage</div>
+    <table class="table table-sm mb-0"><tbody>{% for k, v in rep.entities.items() %}<tr><td>{{ k.replace("_"," ") }}</td><td class="text-end">{{ v }}</td></tr>{% endfor %}</tbody></table></div></div>
+
+  <div class="col-lg-6"><div class="card h-100"><div class="card-header">Database SQL validation <span class="text-muted small">(every value should be 0)</span></div>
+    <table class="table table-sm mb-0"><tbody>{% for k, v in validation.items() %}<tr><td>{{ k.replace("validation_","").replace("_"," ") }}</td>
+      <td class="text-end"><span class="badge {{ 'text-bg-success' if v == 0 else 'text-bg-danger' }}">{{ v }}</span></td></tr>{% endfor %}</tbody></table></div></div>
+  <div class="col-lg-6"><div class="card h-100"><div class="card-header">Database row counts</div>
+    <table class="table table-sm mb-0"><tbody>{% for k, v in summary.row_counts.items() %}<tr><td><code>{{ k }}</code></td><td class="text-end">{{ "{:,}".format(v) }}</td></tr>{% endfor %}</tbody></table>
+    <div class="card-footer small text-muted">Missing values in fact table: {{ summary.missing_values.values()|sum }}</div></div></div>
+
+  <div class="col-lg-6"><div class="card h-100"><div class="card-header">Pipeline timings (seconds, measured on the last run)</div>
+    <table class="table table-sm mb-0"><tbody>{% for k, v in rep.timings.items() %}<tr><td>{{ k.replace("_s","").replace("_"," ") }}</td><td class="text-end">{{ v }}</td></tr>{% endfor %}</tbody></table></div></div>
+  <div class="col-lg-6"><div class="card h-100"><div class="card-header">Cleaning rules applied</div>
+    <ol class="small my-2">{% for r in rep.rules %}<li>{{ r }}</li>{% endfor %}</ol></div></div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Methodology{% endblock %}
+{% block content %}
+<h1 class="h3">Data methodology</h1>
+<p class="text-muted">How the data are structured, cleaned, calculated and what they can and cannot show.</p>
+
+{% if synthetic %}
+<div class="alert alert-warning"><strong>These data are synthetic.</strong> No real-world observation is represented. Every figure on this site is an artefact of the simulation (seed {{ prov.seed if prov else 42 }}) and is useful only to demonstrate the platform. To use real data see “Replacing the synthetic data” below.</div>
+{% endif %}
+
+<div class="row g-3">
+  <div class="col-lg-6"><div class="card h-100"><div class="card-body">
+    <h2 class="h5">Grain and scope</h2>
+    <ul>
+      <li><strong>Grain:</strong> one row per country × month × fuel type (Petrol, Diesel, LPG).</li>
+      <li><strong>Scope:</strong> 84 countries in 7 regions, January 2020 to October 2026 (2026 is a partial year).</li>
+      <li><strong>Record count:</strong> the brief asked for 27,468 records. 84 countries × 3 fuels × 82 months = 20,664 complete rows before cleaning; the target is <strong>not met</strong> and is not claimed. The exact post-cleaning counts are on the <a href="/data-quality">data quality</a> page.</li>
+      <li><strong>Prices:</strong> nominal USD per litre (LPG per litre-equivalent). No inflation adjustment and no currency conversion is applied; local currency is metadata only.</li>
+      <li><strong>Model:</strong> star schema – <code>fact_fuel_price</code>, <code>fact_economy</code> (country × year GDP per capita), <code>dim_country</code>, <code>dim_date</code>, <code>dim_fuel</code>.</li>
+    </ul>
+  </div></div></div>
+  <div class="col-lg-6"><div class="card h-100"><div class="card-body">
+    <h2 class="h5">Calculations</h2>
+    <div class="table-responsive"><table class="table table-sm small mb-0"><tbody>
+      <tr><th>Tax rate</th><td>tax ÷ (retail price − tax) × 100 (rate on the pre-tax price)</td></tr>
+      <tr><th>Tax burden</th><td>Σ tax ÷ Σ retail price × 100 (price-weighted “effective” burden)</td></tr>
+      <tr><th>Subsidy ratio</th><td>Σ subsidy ÷ Σ retail price × 100</td></tr>
+      <tr><th>Affordability</th><td>retail price ÷ (GDP per capita ÷ 365) × 100; lower = more affordable</td></tr>
+      <tr><th>Year-over-year</th><td>annual mean price ÷ previous annual mean − 1 (partial years marked *)</td></tr>
+      <tr><th>Volatility</th><td>CV = std ÷ mean of monthly price level; also std of month-over-month % change</td></tr>
+      <tr><th>Regional mean</th><td>mean of all monthly observations in the region</td></tr>
+      <tr><th>Correlation</th><td>Pearson r across country-level means</td></tr>
+      <tr><th>Forecast</th><td>damped-trend Holt smoothing vs naive baseline; approximate 95% band; 6-month holdout</td></tr>
+    </tbody></table></div>
+  </div></div></div>
+
+  <div class="col-lg-6"><div class="card h-100"><div class="card-body">
+    <h2 class="h5">Cleaning rules</h2>
+    {% if prov %}<p class="small text-muted">The synthetic raw file deliberately contains defects (duplicates, missing values, negative prices, label variants, mixed date formats) so the cleaning logic is exercised. Injected counts are in <code>data/raw/DATA_PROVENANCE.json</code>.</p>{% endif %}
+    <p class="small mb-0">Exact duplicates are removed; impossible values (non-positive prices, tax rates outside 0–500%) are rejected and logged; missing tax, subsidy and GDP values are filled by documented, field-specific rules and flagged; extreme prices (more than 5× or less than 1/5 of the country-fuel median) are rejected; prices deviating over 35% from a 13-month rolling median are flagged but kept. Every removal is written to <code>data/processed/rejected_rows.csv</code>. The full rule list is on the <a href="/data-quality">data quality</a> page.</p>
+  </div></div></div>
+  <div class="col-lg-6"><div class="card h-100"><div class="card-body">
+    <h2 class="h5">Assumptions and limitations</h2>
+    <ul class="small mb-0">
+      {% if prov %}{% for a in prov.assumptions %}<li>{{ a }}</li>{% endfor %}{% endif %}
+      <li>Income groups use illustrative GDP-per-capita thresholds ({{ cfg.INCOME_BINS[1:4]|join(", ") }} USD), not official World Bank cut-offs.</li>
+      <li>Correlations and scatter plots describe association only; they do not establish that taxes or subsidies cause price differences.</li>
+      <li>Because countries are weighted equally in country-level views, large and small economies count the same.</li>
+      <li>Forecasts are demonstrations on simulated data, not predictions.</li>
+    </ul>
+  </div></div></div>
+
+  <div class="col-12"><div class="card"><div class="card-body">
+    <h2 class="h5">Replacing the synthetic data</h2>
+    <ol class="small mb-0">
+      <li>Prepare a CSV or Excel file at the grain above with columns for country code, country, region, date, fuel type, retail price (USD/L), tax per litre or tax rate, subsidy per litre, and GDP per capita (see <code>docs/data_dictionary.md</code>).</li>
+      <li>Set <code>RAW_DATA_FILE</code> in <code>.env</code> to the file (and, if its headers differ, edit <code>COLUMN_MAP</code> in <code>config.py</code>).</li>
+      <li>Run <code>python scripts/run_pipeline.py</code>. The data-origin label switches to “external” automatically and this site’s synthetic banner disappears.</li>
+      <li>Convert prices to USD (and decide on inflation adjustment) <em>before</em> loading; the pipeline does not do FX conversion.</li>
+    </ol>
+  </div></div></div>
+</div>
+{% endblock %}

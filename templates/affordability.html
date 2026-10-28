@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% from "_macros.html" import chart_card, page_head with context %}
+{% block title %}Affordability &amp; economics{% endblock %}
+{% block content %}
+{{ page_head("Affordability and economic analysis", "Fuel cost relative to income: how much of a day's GDP per capita one litre costs.", ["Researchers", "Policy consultants"]) }}
+<div class="row g-3">
+  {{ chart_card("income_affordability", col="col-12 col-xl-6", height=420) }}
+  {{ chart_card("affordability_gdp", col="col-12 col-xl-6", height=420) }}
+  {{ chart_card("correlation", col="col-12", height=470, anchor="correlation") }}
+</div>
+<aside class="card mt-3"><div class="card-body small">
+  <strong>Affordability indicator.</strong> Price per litre ÷ (GDP per capita ÷ 365) × 100. A value of 20 means one litre costs 20% of an average day's GDP per capita; <em>lower is more affordable</em>.
+  GDP per capita is an average, not a household income, so it is a rough proxy.
+</div></aside>
+{% endblock %}

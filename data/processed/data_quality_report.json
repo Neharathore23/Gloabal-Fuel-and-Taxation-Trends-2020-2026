@@ -1,0 +1,141 @@
+{
+  "generated_at": "2026-10-28T18:59:21+00:00",
+  "is_synthetic": true,
+  "data_sources": [
+    "SYNTHETIC (simulated, seed=42) - not real-world data"
+  ],
+  "grain": "one row per country x month x fuel type",
+  "price_basis": "nominal USD per litre (no inflation adjustment, no FX conversion in this pipeline)",
+  "counts": {
+    "source_records": 20724,
+    "exact_duplicates_removed": 60,
+    "key_conflicts_removed": 0,
+    "hard_rejects": 27,
+    "unimputable_rejected": 0,
+    "extreme_price_rejected": 6,
+    "total_removed": 93,
+    "cleaned_records": 20631,
+    "target_records": 27468,
+    "target_met": false,
+    "inserted_records": 20631
+  },
+  "rejected_by_reason": {
+    "exact_duplicate": 60,
+    "missing_price": 15,
+    "nonpositive_price": 6,
+    "invalid_tax_rate": 6,
+    "extreme_price": 6
+  },
+  "unparseable_cells": {
+    "price_usd_per_litre": 0,
+    "tax_usd_per_litre": 0,
+    "tax_rate_pct": 0,
+    "subsidy_usd_per_litre": 0,
+    "gdp_per_capita_usd": 0,
+    "date": 0
+  },
+  "missing_before_cleaning": {
+    "country_code": 0,
+    "country": 0,
+    "region": 0,
+    "income_group": 0,
+    "date": 0,
+    "fuel_type": 0,
+    "currency_local": 0,
+    "price_usd_per_litre": 15,
+    "tax_usd_per_litre": 30,
+    "tax_rate_pct": 0,
+    "subsidy_usd_per_litre": 40,
+    "gdp_per_capita_usd": 20,
+    "data_source": 0
+  },
+  "imputed": {
+    "imputed_tax": 30,
+    "imputed_tax_rate": 0,
+    "imputed_subsidy": 40,
+    "imputed_gdp": 20,
+    "derived_income_group": 0
+  },
+  "flags_kept": {
+    "price_outlier": 169,
+    "imputed_subsidy": 40,
+    "imputed_tax": 30,
+    "imputed_gdp": 20
+  },
+  "entities": {
+    "countries": 84,
+    "regions": 7,
+    "fuel_types": 3,
+    "income_groups": 4,
+    "months": 82,
+    "min_date": "2020-01-01",
+    "max_date": "2026-10-01"
+  },
+  "rules": [
+    "Text fields are trimmed; country_code upper-cased; country/region/income labels are mapped to one canonical value per code.",
+    "Fuel labels are mapped to Petrol/Diesel/LPG (aliases: gasoline, gasoil, autogas...); unmapped labels are rejected.",
+    "Dates are parsed (mixed formats) and snapped to the first day of the month.",
+    "Exact duplicate rows (after standardisation) are removed and logged; conflicting duplicates of the same country/month/fuel keep the first row and log the rest.",
+    "Rejected: missing key fields, missing/non-positive price, tax rate <0 or >500, negative tax or subsidy, tax and rate both missing, non-positive GDP.",
+    "Missing tax amount = price x rate / (100 + rate); missing tax rate = tax / (price - tax) x 100 (flag imputed_tax / imputed_tax_rate).",
+    "Missing subsidy = median of the same country+fuel+year, else the country+fuel median (flag imputed_subsidy); unresolved rows are rejected.",
+    "Missing GDP per capita = median of the same country+year, else the country median (flag imputed_gdp); unresolved rows are rejected.",
+    "Missing income group is derived from GDP per capita using config.INCOME_BINS (flag derived_income_group).",
+    "Extreme prices (> 5x or < 1/5 of the country+fuel median) are rejected as probable unit errors.",
+    "Prices deviating >35% from a centred 13-month rolling median are flagged price_outlier but kept.",
+    "tax_rate_pct differing by >1 percentage point from tax/(price-tax) is flagged tax_rate_mismatch but kept.",
+    "Affordability = price per litre as % of daily GDP per capita (price / (GDP pc / 365) x 100); lower = more affordable.",
+    "Prices are nominal USD per litre; no inflation adjustment and no FX conversion is applied by this pipeline."
+  ],
+  "database": {
+    "summary": {
+      "row_counts": {
+        "dim_country": 84,
+        "dim_date": 82,
+        "dim_fuel": 3,
+        "fact_economy": 588,
+        "fact_fuel_price": 20631
+      },
+      "countries": 84,
+      "regions": 7,
+      "fuel_types": 3,
+      "income_groups": 4,
+      "date_min": "2020-01-01",
+      "date_max": "2026-10-01",
+      "missing_values": {
+        "country_id": 0,
+        "date_id": 0,
+        "fuel_id": 0,
+        "price_usd_per_litre": 0,
+        "price_before_tax_usd": 0,
+        "tax_usd_per_litre": 0,
+        "tax_rate_pct": 0,
+        "tax_share_pct": 0,
+        "subsidy_usd_per_litre": 0,
+        "subsidy_ratio_pct": 0,
+        "affordability_pct_daily_income": 0,
+        "is_imputed": 0
+      },
+      "last_load": {
+        "loaded_at": "2026-10-28T18:59:24+00:00",
+        "data_origin": "SYNTHETIC",
+        "source_records": 20724,
+        "cleaned_records": 20631,
+        "inserted_records": 20631
+      }
+    },
+    "validation_violations": {
+      "validation_duplicates": 0,
+      "validation_nulls": 0,
+      "validation_ranges": 0,
+      "validation_orphans": 0
+    }
+  },
+  "timings": {
+    "generate_s": 1.753,
+    "ingest_s": 0.343,
+    "preprocess_s": 4.481,
+    "db_total_s": 3.443,
+    "db_load_s": 1.808
+  }
+}

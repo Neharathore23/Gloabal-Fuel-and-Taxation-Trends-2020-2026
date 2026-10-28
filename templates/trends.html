@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% from "_macros.html" import chart_card, page_head with context %}
+{% block title %}Trends &amp; forecasting{% endblock %}
+{% block content %}
+{{ page_head("Trends, volatility and forecasting", "Year-over-year change, the most volatile price series, and a lightweight 12-month forecast with an uncertainty band.", ["Supply-chain managers", "Researchers"]) }}
+<div class="row g-3">
+  {{ chart_card("forecast", col="col-12", height=420, opts=[("horizon", "Forecast horizon", [(6,"6 months"),(12,"12 months"),(24,"24 months")], 12)]) }}
+  {{ chart_card("volatility", col="col-12 col-xl-6", height=470, opts=[("n", "Series shown", [(10,"Top 10"),(15,"Top 15"),(25,"Top 25")], 15)]) }}
+  {{ chart_card("yoy_change", col="col-12 col-xl-6", height=470) }}
+</div>
+<aside class="card mt-3"><div class="card-body small">
+  <strong>Forecast caveat.</strong> The forecast uses damped-trend exponential smoothing on the selection's average monthly price and is compared against a naive "last value" baseline on a 6-month holdout.
+  The interval is approximate. Prices respond to events no univariate model can foresee, and the demo data are synthetic.
+</div></aside>
+{% endblock %}

@@ -1,0 +1,61 @@
+/* Energy-economics theme: deep navy + amber, light surfaces. Colours that carry meaning in charts live in src/charts.py. */
+:root {
+  --ink: #0b2545; --ink-2: #13315c; --amber: #f2a900; --bg: #f4f6f9; --surface: #ffffff;
+  --line: #dde3ea; --muted: #5b6776; --radius: .6rem;
+  --bs-body-bg: var(--bg); --bs-body-color: #1f2937; --bs-link-color: #0a58ca;
+}
+body { background: var(--bg); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+.skip-link { position: absolute; left: .5rem; top: .5rem; z-index: 2000; background: #fff; padding: .4rem .8rem; border-radius: .3rem; }
+
+.app-nav { background: var(--ink); }
+.app-nav .nav-link.active { color: var(--amber); font-weight: 600; }
+.brand-mark { display: inline-block; width: 1.1rem; height: 1.1rem; margin-right: .5rem; vertical-align: -.15rem;
+  border: 3px solid var(--amber); border-bottom: 0; border-radius: .35rem .35rem 0 0; }
+
+.synthetic-banner { background: #fff3cd; color: #664d03; border-bottom: 1px solid #ffe69c; font-size: .85rem; padding: .35rem 0; }
+.filter-bar { background: var(--ink-2); color: #e8eef7; }
+.filter-bar .form-label, .filter-bar legend { color: #cdd8e8; margin-bottom: .2rem; font-size: .8rem; float: none; width: auto; }
+.filter-summary { color: #dbe5f3; }
+
+.hero { background: linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 100%); color: #fff; padding: 2.2rem 1.5rem; border-radius: var(--radius); }
+.hero .lead { max-width: 56rem; color: #dbe5f3; }
+
+.card { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: 0 1px 2px rgba(11,37,69,.04); }
+.card-header { background: #fbfcfd; border-bottom: 1px solid var(--line); font-weight: 600; }
+.card-footer { background: #fbfcfd; border-top: 1px solid var(--line); }
+
+.kpi-card { border-left: 4px solid var(--amber); }
+.kpi-label { font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.kpi-value { font-size: 1.7rem; font-weight: 700; color: var(--ink); line-height: 1.2; font-variant-numeric: tabular-nums; }
+.kpi-hint { font-size: .78rem; color: var(--muted); }
+.kpi-card.is-loading .kpi-value { opacity: .35; }
+
+.persona-badge { background: #e7eef8; color: var(--ink); font-weight: 500; }
+.persona-card { border-top: 4px solid var(--amber); }
+
+.chart-body { position: relative; padding: .5rem; }
+.chart-area { width: 100%; }
+.chart-state { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: .5rem; text-align: center; padding: 1rem; background: rgba(255,255,255,.82); font-size: .9rem; color: var(--muted); }
+.chart-state[hidden] { display: none; }
+.chart-state.is-error { color: #842029; }
+.chart-note { min-height: 2.2rem; line-height: 1.35; }
+
+.table-wrap { max-height: 520px; overflow: auto; }
+.table-wrap table { font-size: .85rem; margin: 0; }
+.table-wrap thead th { position: sticky; top: 0; background: #f1f4f8; cursor: pointer; white-space: nowrap; }
+.table-wrap thead th[aria-sort="ascending"]::after { content: " ▲"; font-size: .7em; }
+.table-wrap thead th[aria-sort="descending"]::after { content: " ▼"; font-size: .7em; }
+.table-wrap td.num, .table-wrap th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+.tableau-frame { width: 100%; height: 760px; border: 0; }
+.doc-body { max-width: 62rem; } .doc-body pre { background: #f1f4f8; padding: .8rem; border-radius: .4rem; overflow: auto; font-size: .85rem; }
+.app-footer { color: var(--muted); font-size: .8rem; padding: 1.5rem 0 2rem; border-top: 1px solid var(--line); margin-top: 2rem; }
+
+@media (max-width: 575.98px) {
+  .kpi-value { font-size: 1.35rem; }
+  .chart-area { min-height: 300px; }
+  .hero { padding: 1.4rem 1rem; }
+  .tableau-frame { height: 560px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }

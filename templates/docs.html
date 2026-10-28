@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Documentation{% endblock %}
+{% block content %}
+<h1 class="h3">Documentation</h1>
+<div class="row g-3">
+  <div class="col-lg-5"><div class="card h-100"><div class="card-header">Guides</div>
+    {% if docs %}<ul class="list-group list-group-flush">{% for d in docs %}
+      <li class="list-group-item"><a href="/docs/{{ d.folder }}/{{ d.name }}">{{ d.title }}</a> <span class="text-muted small">{{ d.path }}</span></li>{% endfor %}</ul>
+    {% else %}<div class="card-body text-muted">No documentation files found.</div>{% endif %}</div></div>
+  <div class="col-lg-7"><div class="card h-100"><div class="card-header">JSON API</div>
+    <div class="card-body small">
+      <p>All endpoints are read-only <code>GET</code>. Filters are query parameters: <code>date_from</code>, <code>date_to</code> (YYYY-MM), and comma-separated <code>country</code> (ISO-3 codes), <code>region</code>, <code>fuel</code>, <code>income</code>. Invalid values return HTTP 400 with <code>{"error": ...}</code>.</p>
+      <table class="table table-sm"><tbody>
+        <tr><td><code>/api/options</code></td><td>Filter choices and date range</td></tr>
+        <tr><td><code>/api/kpis</code></td><td>KPI values for the selection (<code>empty: true</code> when nothing matches)</td></tr>
+        <tr><td><code>/api/chart/&lt;name&gt;</code></td><td>Plotly figure JSON. Options: <code>by</code>, <code>n</code>, <code>horizon</code></td></tr>
+        <tr><td><code>/api/data/&lt;name&gt;</code></td><td>Tables: <code>price_stats</code> (<code>by=region|fuel_type|income_group</code>), <code>country_table</code></td></tr>
+        <tr><td><code>/api/charts</code></td><td>List of available charts</td></tr>
+        <tr><td><code>/api/quality</code></td><td>Data quality report</td></tr>
+        <tr><td><code>/healthz</code></td><td>Liveness and database status</td></tr>
+      </tbody></table>
+      <p class="mb-1"><strong>Charts:</strong></p>
+      <p class="mb-0">{% for s in charts %}<code>{{ s.name }}</code> ({{ s.page }}){{ ", " if not loop.last }}{% endfor %}</p>
+    </div></div></div>
+</div>
+{% endblock %}

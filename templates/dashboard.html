@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% from "_macros.html" import chart_card, kpi, page_head with context %}
+{% block title %}Global dashboard{% endblock %}
+{% block content %}
+{{ page_head("Global overview", "Headline fuel price, tax and subsidy indicators for the current selection, with the global price map and trends.", ["Policy consultants", "Supply-chain managers", "Researchers"]) }}
+<div class="row g-3 mb-3">
+  {{ kpi("avg_price", "Average retail price", "USD per litre, nominal") }}
+  {{ kpi("effective_tax_burden_pct", "Average tax burden", "tax as % of retail price") }}
+  {{ kpi("subsidy_to_price_pct", "Subsidy ratio", "subsidy as % of retail price") }}
+  {{ kpi("n_countries", "Countries", "in the selection") }}
+  {{ kpi("n_records", "Observations", "country × month × fuel") }}
+</div>
+<div class="row g-3">
+  {{ chart_card("choropleth", col="col-12", height=470) }}
+  {{ chart_card("trend_lines", col="col-12 col-xl-7", opts=[("by", "Split by", [("fuel_type","By fuel"),("region","By region"),("income_group","By income group")], "fuel_type")]) }}
+  {{ chart_card("fuel_comparison", col="col-12 col-xl-5") }}
+</div>
+{% endblock %}

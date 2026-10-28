@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<section class="hero mb-4">
+  <h1 class="display-6 fw-semibold">Global Fuel Prices, Taxation &amp; Subsidy Trends <span class="text-nowrap">2020–2026</span></h1>
+  <p class="lead mb-3">An end-to-end analytics platform comparing petrol, diesel and LPG prices, taxes, subsidies and affordability across {{ summary.countries }} countries and {{ summary.regions }} regions.</p>
+  <a class="btn btn-warning btn-lg" href="/dashboard">Open the dashboard</a>
+  <a class="btn btn-outline-light btn-lg ms-2" href="/methodology">Read the methodology</a>
+</section>
+
+<section class="row g-3 mb-4" aria-label="Dataset at a glance">
+  <div class="col-6 col-md-3"><div class="card kpi-card"><div class="card-body"><div class="kpi-label">Countries</div><div class="kpi-value">{{ summary.countries }}</div><div class="kpi-hint">{{ summary.regions }} regions</div></div></div></div>
+  <div class="col-6 col-md-3"><div class="card kpi-card"><div class="card-body"><div class="kpi-label">Fact rows in database</div><div class="kpi-value">{{ "{:,}".format(summary.row_counts.get("fact_fuel_price", 0)) }}</div><div class="kpi-hint">country × month × fuel</div></div></div></div>
+  <div class="col-6 col-md-3"><div class="card kpi-card"><div class="card-body"><div class="kpi-label">Period</div><div class="kpi-value fs-4">{{ summary.date_min[:7] }} → {{ summary.date_max[:7] }}</div><div class="kpi-hint">monthly; final year partial</div></div></div></div>
+  <div class="col-6 col-md-3"><div class="card kpi-card"><div class="card-body"><div class="kpi-label">Visualisations</div><div class="kpi-value">{{ n_charts }}</div><div class="kpi-hint">interactive Plotly charts</div></div></div></div>
+</section>
+
+<h2 class="h4 mb-3">Who is it for?</h2>
+<div class="row g-3 mb-4">
+  {% for p in personas %}
+  <div class="col-12 col-lg-4"><article class="card h-100 persona-card"><div class="card-body">
+    <h3 class="h6 text-uppercase text-muted">{{ p.name }}</h3>
+    <p>{{ p.need }}</p>
+    <ul class="list-unstyled mb-0">{% for label, href in p.links %}<li><a href="{{ href }}">{{ label }} →</a></li>{% endfor %}</ul>
+  </div></article></div>
+  {% endfor %}
+</div>
+
+<h2 class="h4 mb-3">What is inside</h2>
+<div class="row g-3">
+  <div class="col-md-6"><div class="card h-100"><div class="card-body small">
+    <h3 class="h6">Pages</h3>
+    <ul class="mb-0">
+      <li><a href="/dashboard">Global dashboard</a> – KPIs, price map, trends, fuel comparison</li>
+      <li><a href="/regional">Regional analysis</a> – regions, rankings, median/max statistics</li>
+      <li><a href="/taxation">Tax &amp; subsidy</a> – tax rates, burdens, subsidy vs price</li>
+      <li><a href="/affordability">Affordability</a> – income groups, GDP per capita, correlations</li>
+      <li><a href="/trends">Trends &amp; forecasting</a> – volatility, year-over-year, forecast</li>
+    </ul></div></div></div>
+  <div class="col-md-6"><div class="card h-100"><div class="card-body small">
+    <h3 class="h6">Trust &amp; transparency</h3>
+    <ul class="mb-0">
+      <li><a href="/methodology">Methodology</a> – grain, formulas, assumptions, limitations</li>
+      <li><a href="/data-quality">Data quality</a> – counts, rejected rows, imputation rules, SQL checks</li>
+      <li><a href="/tableau">Tableau</a> – Tableau-ready data and optional embed</li>
+      <li><a href="/docs">Documentation</a> – guides and JSON API reference</li>
+    </ul></div></div></div>
+</div>
+{% endblock %}

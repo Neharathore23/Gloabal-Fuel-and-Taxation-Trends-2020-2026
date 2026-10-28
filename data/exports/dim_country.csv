@@ -1,0 +1,85 @@
+country_id,country_code,country_name,region,income_group,currency_local
+1,AFG,Afghanistan,South Asia,Low,AFN
+2,AGO,Angola,Sub-Saharan Africa,Lower-middle,AOA
+3,ARE,United Arab Emirates,Middle East & North Africa,High,AED
+4,ARG,Argentina,Latin America & Caribbean,Upper-middle,ARS
+5,AUS,Australia,East Asia & Pacific,High,AUD
+6,AUT,Austria,Europe & Central Asia,High,EUR
+7,BEL,Belgium,Europe & Central Asia,High,EUR
+8,BGD,Bangladesh,South Asia,Lower-middle,BDT
+9,BOL,Bolivia,Latin America & Caribbean,Lower-middle,BOB
+10,BRA,Brazil,Latin America & Caribbean,Upper-middle,BRL
+11,BTN,Bhutan,South Asia,Lower-middle,BTN
+12,CAN,Canada,North America,High,CAD
+13,CHE,Switzerland,Europe & Central Asia,High,CHF
+14,CHL,Chile,Latin America & Caribbean,Upper-middle,CLP
+15,CHN,China,East Asia & Pacific,Upper-middle,CNY
+16,CIV,Cote d'Ivoire,Sub-Saharan Africa,Lower-middle,XOF
+17,COL,Colombia,Latin America & Caribbean,Upper-middle,COP
+18,CRI,Costa Rica,Latin America & Caribbean,Upper-middle,CRC
+19,CZE,Czechia,Europe & Central Asia,High,CZK
+20,DEU,Germany,Europe & Central Asia,High,EUR
+21,DOM,Dominican Republic,Latin America & Caribbean,Upper-middle,DOP
+22,DZA,Algeria,Middle East & North Africa,Lower-middle,DZD
+23,ECU,Ecuador,Latin America & Caribbean,Upper-middle,USD
+24,EGY,Egypt,Middle East & North Africa,Lower-middle,EGP
+25,ESP,Spain,Europe & Central Asia,High,EUR
+26,ETH,Ethiopia,Sub-Saharan Africa,Low,ETB
+27,FRA,France,Europe & Central Asia,High,EUR
+28,GBR,United Kingdom,Europe & Central Asia,High,GBP
+29,GHA,Ghana,Sub-Saharan Africa,Lower-middle,GHS
+30,GRC,Greece,Europe & Central Asia,High,EUR
+31,GTM,Guatemala,Latin America & Caribbean,Upper-middle,GTQ
+32,HUN,Hungary,Europe & Central Asia,High,HUF
+33,IDN,Indonesia,East Asia & Pacific,Lower-middle,IDR
+34,IND,India,South Asia,Lower-middle,INR
+35,IRN,Iran,Middle East & North Africa,Lower-middle,IRR
+36,IRQ,Iraq,Middle East & North Africa,Lower-middle,IQD
+37,ITA,Italy,Europe & Central Asia,High,EUR
+38,JOR,Jordan,Middle East & North Africa,Lower-middle,JOD
+39,JPN,Japan,East Asia & Pacific,High,JPY
+40,KAZ,Kazakhstan,Europe & Central Asia,Upper-middle,KZT
+41,KEN,Kenya,Sub-Saharan Africa,Lower-middle,KES
+42,KHM,Cambodia,East Asia & Pacific,Lower-middle,KHR
+43,KOR,South Korea,East Asia & Pacific,High,KRW
+44,KWT,Kuwait,Middle East & North Africa,High,KWD
+45,LAO,Laos,East Asia & Pacific,Lower-middle,LAK
+46,LKA,Sri Lanka,South Asia,Lower-middle,LKR
+47,MAR,Morocco,Middle East & North Africa,Lower-middle,MAD
+48,MDV,Maldives,South Asia,Upper-middle,MVR
+49,MEX,Mexico,Latin America & Caribbean,Upper-middle,MXN
+50,MNG,Mongolia,East Asia & Pacific,Lower-middle,MNT
+51,MOZ,Mozambique,Sub-Saharan Africa,Low,MZN
+52,MYS,Malaysia,East Asia & Pacific,Upper-middle,MYR
+53,NGA,Nigeria,Sub-Saharan Africa,Lower-middle,NGN
+54,NLD,Netherlands,Europe & Central Asia,High,EUR
+55,NOR,Norway,Europe & Central Asia,High,NOK
+56,NPL,Nepal,South Asia,Lower-middle,NPR
+57,NZL,New Zealand,East Asia & Pacific,High,NZD
+58,OMN,Oman,Middle East & North Africa,High,OMR
+59,PAK,Pakistan,South Asia,Lower-middle,PKR
+60,PER,Peru,Latin America & Caribbean,Upper-middle,PEN
+61,PHL,Philippines,East Asia & Pacific,Lower-middle,PHP
+62,POL,Poland,Europe & Central Asia,High,PLN
+63,PRT,Portugal,Europe & Central Asia,High,EUR
+64,PRY,Paraguay,Latin America & Caribbean,Upper-middle,PYG
+65,QAT,Qatar,Middle East & North Africa,High,QAR
+66,ROU,Romania,Europe & Central Asia,Upper-middle,RON
+67,RUS,Russia,Europe & Central Asia,Upper-middle,RUB
+68,SAU,Saudi Arabia,Middle East & North Africa,High,SAR
+69,SEN,Senegal,Sub-Saharan Africa,Lower-middle,XOF
+70,SGP,Singapore,East Asia & Pacific,High,SGD
+71,SWE,Sweden,Europe & Central Asia,High,SEK
+72,THA,Thailand,East Asia & Pacific,Upper-middle,THB
+73,TUN,Tunisia,Middle East & North Africa,Lower-middle,TND
+74,TUR,Turkiye,Europe & Central Asia,Upper-middle,TRY
+75,TZA,Tanzania,Sub-Saharan Africa,Lower-middle,TZS
+76,UGA,Uganda,Sub-Saharan Africa,Low,UGX
+77,UKR,Ukraine,Europe & Central Asia,Lower-middle,UAH
+78,URY,Uruguay,Latin America & Caribbean,High,UYU
+79,USA,United States,North America,High,USD
+80,UZB,Uzbekistan,Europe & Central Asia,Lower-middle,UZS
+81,VEN,Venezuela,Latin America & Caribbean,Lower-middle,VES
+82,VNM,Vietnam,East Asia & Pacific,Lower-middle,VND
+83,ZAF,South Africa,Sub-Saharan Africa,Upper-middle,ZAR
+84,ZMB,Zambia,Sub-Saharan Africa,Low,ZMW

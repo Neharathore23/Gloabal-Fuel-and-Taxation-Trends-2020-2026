@@ -1,0 +1,36 @@
+{
+  "synthetic": true,
+  "seed": 42,
+  "file": "fuel_prices_raw_synthetic.csv",
+  "countries": 84,
+  "regions": 7,
+  "fuel_types": 3,
+  "periods": 82,
+  "defect_free_rows": 20664,
+  "injected_defects": {
+    "missing_price": 15,
+    "missing_tax": 30,
+    "missing_subsidy": 40,
+    "missing_gdp": 20,
+    "negative_price": 6,
+    "invalid_tax_rate": 6,
+    "extreme_price": 6,
+    "country_name_case_variants": 222,
+    "country_name_whitespace_variants": 225,
+    "fuel_type_label_variants": 602,
+    "region_label_variants": 202,
+    "date_format_variants": 107,
+    "exact_duplicate_rows_added": 60,
+    "rows_before_duplicates": 20664,
+    "rows_written": 20724
+  },
+  "assumptions": [
+    "All values are simulated; no real-world observation is represented.",
+    "Grain: one row per country x month x fuel type; prices are nominal USD per litre (LPG per litre-equivalent).",
+    "Prices are generated directly in USD, so no currency conversion is involved; currency_local is metadata only.",
+    "retail price = (market pre-tax price - subsidy) + tax; tax_rate_pct = tax / (retail - tax) * 100.",
+    "A stylised global cost index drives prices; subsidised countries pass through only ~50% of changes.",
+    "Subsidy levels, tax levels and GDP per capita are illustrative country settings, not official statistics.",
+    "Income group is fixed per country from 2020 GDP per capita using illustrative thresholds."
+  ]
+}

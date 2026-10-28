@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Tableau integration{% endblock %}
+{% block content %}
+<h1 class="h3">Tableau integration</h1>
+<p class="text-muted">Tableau-ready data and an optional embed of a published dashboard. The Plotly dashboards in this app work without Tableau.</p>
+
+{% if embed_url %}
+<div class="card mb-3"><div class="card-header">Embedded Tableau dashboard</div>
+  <div class="card-body p-0"><iframe class="tableau-frame" src="{{ embed_url }}" title="Published Tableau dashboard" loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-downloads"></iframe></div>
+  <div class="card-footer small text-muted">Loaded from the URL configured in <code>TABLEAU_EMBED_URL</code>. This app cannot verify that the workbook is working; check it in the frame.</div></div>
+{% elif invalid %}
+<div class="alert alert-danger"><strong>TABLEAU_EMBED_URL is set but not accepted.</strong> It must be an <code>https://</code> URL on an allowed host ({{ allowed|join(", ") }}). Add your own host with <code>TABLEAU_ALLOWED_HOSTS</code>. Nothing is embedded.</div>
+{% else %}
+<div class="alert alert-secondary"><strong>No published Tableau dashboard is configured</strong>, so nothing is embedded. A Tableau workbook cannot be authored without Tableau Desktop or Tableau Public: build it from the data below using <code>tableau/dashboard_specification.md</code>, publish it, then set <code>TABLEAU_EMBED_URL</code> in <code>.env</code> and restart the app.</div>
+{% endif %}
+
+<div class="row g-3">
+  <div class="col-lg-7"><div class="card h-100"><div class="card-header">Tableau-ready CSV files</div>
+    {% if files %}
+    <div class="table-responsive"><table class="table table-sm mb-0"><thead><tr><th>File</th><th class="text-end">Size</th><th></th></tr></thead><tbody>
+      {% for n in files %}<tr><td><code>{{ n }}</code></td><td class="text-end">{{ sizes[n] }} KB</td><td class="text-end"><a href="/download/{{ n }}">Download</a></td></tr>{% endfor %}
+    </tbody></table></div>
+    <div class="card-footer small text-muted"><code>fuel_prices_tableau.csv</code> is a single flat file (simplest). The star-schema files (<code>fact_*</code>, <code>dim_*</code>) support relationships.</div>
+    {% else %}<div class="card-body">No exports yet. Run <code>python scripts/run_pipeline.py</code>.</div>{% endif %}
+  </div></div>
+  <div class="col-lg-5"><div class="card h-100"><div class="card-header">Steps that need Tableau Desktop / Public</div>
+    <ol class="small my-2">
+      <li>Connect to the flat CSV, or to <code>data/fuel_analytics.db</code> via an SQLite ODBC/JDBC driver.</li>
+      <li>Create the calculated fields in <code>tableau/calculated_fields.md</code>.</li>
+      <li>Build the sheets, dashboards and five-scene story from the specifications in <code>tableau/</code>.</li>
+      <li>Publish to Tableau Public (the data become public) and copy the “Share → Embed” URL.</li>
+      <li>Set <code>TABLEAU_EMBED_URL</code> and restart this app.</li>
+    </ol></div></div>
+</div>
+{% endblock %}

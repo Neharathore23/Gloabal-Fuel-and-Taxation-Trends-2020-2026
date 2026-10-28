@@ -1,0 +1,59 @@
+{# chart_card: a titled card whose figure is loaded from /api/chart/<name> by static/js/app.js.
+   opts = [(query_key, label, [(value, label), ...], default_value)] renders per-chart <select> controls. #}
+{% macro chart_card(name, col="col-12 col-xl-6", height=380, opts=[], anchor=None) %}
+<div class="{{ col }}"{% if anchor %} id="{{ anchor }}"{% endif %}>
+  <section class="card chart-card h-100" data-chart="{{ name }}" aria-labelledby="t-{{ name }}">
+    <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <h2 class="h6 mb-0" id="t-{{ name }}">{{ chart_reg[name].title }}</h2>
+      {% if opts %}<div class="d-flex gap-2">
+        {% for key, label, choices, default in opts %}
+        <label class="visually-hidden" for="o-{{ name }}-{{ key }}">{{ label }}</label>
+        <select class="form-select form-select-sm w-auto" id="o-{{ name }}-{{ key }}" data-opt="{{ key }}" title="{{ label }}">
+          {% for v, l in choices %}<option value="{{ v }}" {{ 'selected' if v|string == default|string }}>{{ l }}</option>{% endfor %}
+        </select>
+        {% endfor %}</div>{% endif %}
+    </div>
+    <div class="card-body chart-body">
+      <div class="chart-area" style="height: {{ height }}px" role="img" aria-label="{{ chart_reg[name].title }}"></div>
+      <div class="chart-state" role="status" aria-live="polite"></div>
+    </div>
+    <div class="card-footer small text-muted chart-note"></div>
+  </section>
+</div>
+{% endmacro %}
+
+{% macro kpi(key, label, hint) %}
+<div class="col-6 col-lg">
+  <div class="card kpi-card h-100" data-kpi="{{ key }}">
+    <div class="card-body">
+      <div class="kpi-label">{{ label }}</div>
+      <div class="kpi-value" aria-live="polite">…</div>
+      <div class="kpi-hint">{{ hint }}</div>
+    </div>
+  </div>
+</div>
+{% endmacro %}
+
+{% macro data_table(name, title, by=None) %}
+<section class="card h-100" data-table="{{ name }}"{% if by %} data-by="{{ by }}"{% endif %}>
+  <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <h2 class="h6 mb-0">{{ title }}</h2>
+    {% if by %}<select class="form-select form-select-sm w-auto" data-opt="by" aria-label="Group by">
+      {% for v, l in [("region", "By region"), ("fuel_type", "By fuel"), ("income_group", "By income group")] %}
+      <option value="{{ v }}" {{ 'selected' if v == by }}>{{ l }}</option>{% endfor %}</select>{% endif %}
+  </div>
+  <div class="card-body p-0 table-wrap"><div class="table-state small text-muted p-3">Loading…</div></div>
+</section>
+{% endmacro %}
+
+{% macro page_head(title, lead, personas) %}
+<header class="page-head mb-3">
+  <h1 class="h3 mb-1">{{ title }}</h1>
+  <p class="text-muted mb-2">{{ lead }}</p>
+  <div class="d-flex flex-wrap gap-2 align-items-center small">
+    <span class="text-muted">Most useful for:</span>
+    {% for p in personas %}<span class="badge persona-badge">{{ p }}</span>{% endfor %}
+  </div>
+</header>
+<div class="alert alert-warning d-none" data-empty-banner role="alert">No data matches the current filters. Widen or reset them.</div>
+{% endmacro %}

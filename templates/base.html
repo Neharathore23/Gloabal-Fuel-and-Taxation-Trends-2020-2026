@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Global Fuel Analytics{% endblock %} · Fuel Prices, Tax &amp; Subsidy 2020–2026</title>
+  <meta name="description" content="Interactive analytics on fuel prices, taxation, subsidies and affordability across 84 countries.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b2545'/%3E%3Cpath d='M9 24V9h8a4 4 0 0 1 4 4v11' fill='none' stroke='%23f2a900' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="{{ assets.bootstrap_css }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+<a class="visually-hidden-focusable skip-link" href="#main">Skip to content</a>
+<nav class="navbar navbar-expand-lg navbar-dark app-nav">
+  <div class="container-xl">
+    <a class="navbar-brand fw-semibold" href="/"><span class="brand-mark" aria-hidden="true"></span>Fuel Analytics</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+            aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto">
+        {% for key, label, href in nav %}
+        <li class="nav-item"><a class="nav-link {{ 'active' if page == key }}" {% if page == key %}aria-current="page"{% endif %}
+            href="{{ href }}" data-base="{{ href }}" {% if key != 'index' %}data-keep-filters{% endif %}>{{ label }}</a></li>
+        {% endfor %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle {{ 'active' if page in ['methodology','data_quality','tableau','docs','doc_view'] }}" href="#"
+             role="button" data-bs-toggle="dropdown" aria-expanded="false">About</a>
+          <ul class="dropdown-menu">
+            {% for key, label, href in more_nav %}<li><a class="dropdown-item" href="{{ href }}">{{ label }}</a></li>{% endfor %}
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{% if synthetic %}
+<div class="synthetic-banner" role="note">
+  <div class="container-xl"><strong>Synthetic demonstration data.</strong> All prices, taxes, subsidies and GDP values are simulated (seed 42), not real-world observations.
+  <a href="/methodology">How to load real data</a></div>
+</div>
+{% endif %}
+
+{% if show_filters %}{% include "_filters.html" %}{% endif %}
+
+<main id="main" class="container-xl py-4">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="app-footer">
+  <div class="container-xl d-flex flex-wrap justify-content-between gap-2">
+    <span>Global Fuel Prices, Taxation &amp; Subsidy Trends (2020–2026){% if synthetic %} · synthetic data{% endif %}</span>
+    <span>Prices: nominal USD per litre. Correlation is not causation.</span>
+  </div>
+</footer>
+
+<script>window.FUEL = {{ {"topojsonURL": topojson_url} | tojson }};</script>
+<script src="{{ assets.bootstrap_js }}"></script>
+{% if show_filters %}<script src="{{ assets.plotly }}" charset="utf-8"></script>{% endif %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

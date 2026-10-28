@@ -1,0 +1,4 @@
+fuel_id,fuel_type,unit
+1,Petrol,USD per litre (nominal)
+2,Diesel,USD per litre (nominal)
+3,LPG,USD per litre (nominal)
